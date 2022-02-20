@@ -1,8 +1,11 @@
 import html2canvas from 'html2canvas';
 import './style.css'
 
+
 const button = document.querySelector("button");
 const video = document.querySelector("video");
+const img = document.querySelector("img");
+
 /*
 let counter = 0;
   setInterval(()=>{
@@ -10,7 +13,7 @@ let counter = 0;
   video!.play();
   counter++;
 }, 5000)
- */
+ */ 
 function printPipWindowDimensions(evt) {
   const pipWindow = evt.target;
   console.log(`The floating window dimensions are: ${pipWindow.width}x${pipWindow.height}px`);
@@ -23,8 +26,11 @@ button.onclick = function() {
     pictureInPictureWindow.onresize = printPipWindowDimensions;
   });
 };
-setTimeout(()=>{
-  html2canvas(document.querySelector("#capture")).then(canvas => {
-    document.body.appendChild(canvas)
+ 
+setInterval(()=>{
+  html2canvas(document.body).then(canvas => {
+    let pngUrl = canvas.toDataURL(); // png in dataURL format
+    img.src = pngUrl;
   });
-}, 2000)
+  
+}, 1000)
