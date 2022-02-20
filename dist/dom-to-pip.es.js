@@ -7476,7 +7476,7 @@ function createDom() {
 }
 function start() {
   createDom();
-  const cStream = recordingCanvas.captureStream(30);
+  const cStream = recordingCanvas.captureStream(1);
   const recorder = new MediaRecorder(cStream);
   recorder.ondataavailable = encodeVideo;
   let timeout;
@@ -7490,11 +7490,12 @@ function start() {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
         recorder.stop();
-      }, 300);
+      }, 500);
     });
   }, 3e3);
 }
 function encodeVideo(e2) {
+  console.log("Encoded");
   const blob = new Blob([e2.data]);
   const vidURL = URL.createObjectURL(blob);
   video.controls = true;

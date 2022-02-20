@@ -20,7 +20,7 @@ function createDom() {
 
 export default function start() {
     createDom();
-    const cStream = recordingCanvas.captureStream(30);
+    const cStream = recordingCanvas.captureStream(1);
     const recorder = new MediaRecorder(cStream);
     recorder.ondataavailable = encodeVideo;
     let timeout;
@@ -32,13 +32,14 @@ export default function start() {
             recordingCanvas.height = canvas.height;
             destCtx.drawImage(canvas, 0, 0);
             clearTimeout(timeout);
-            timeout = setTimeout(() => { recorder.stop(); }, 300)
+            timeout = setTimeout(() => { recorder.stop(); }, 500)
         })
     }, 3000);
 
 }
 function encodeVideo(e: BlobEvent) {
     // combine all our chunks in one blob
+    console.log("Encoded");
     const blob = new Blob([e.data]);
     // do something with this blob
     const vidURL = URL.createObjectURL(blob);
