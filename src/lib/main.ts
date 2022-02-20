@@ -1,4 +1,6 @@
 import html2canvas from 'html2canvas';
+import * as htmlToImage from 'html-to-image';
+
 
 let video, button, recordingCanvas;
 
@@ -25,16 +27,19 @@ export default function start() {
     recorder.ondataavailable = encodeVideo;
     let timeout;
     setInterval(() => {
-        html2canvas(document.body).then(canvas => {
+        htmlToImage.toPng(document.body).then(dataUrl => {
             recorder.start();
+            const img = new Image();
+            img.src = dataUrl;
             const destCtx = recordingCanvas.getContext('2d');
-            recordingCanvas.width = canvas.width;
-            recordingCanvas.height = canvas.height;
-            destCtx.drawImage(canvas, 0, 0);
+            destCtx.width = img.width;
+            destCtx.height = img.height;
+            
+            destCtx.drawImage(img, 0, 0);
             clearTimeout(timeout);
             timeout = setTimeout(() => { recorder.stop(); }, 500)
         })
-    }, 3000);
+    }, 1000);
 
 }
 function encodeVideo(e: BlobEvent) {
