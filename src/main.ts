@@ -1,36 +1,42 @@
 import html2canvas from 'html2canvas';
-import './style.css'
-
 
 const button = document.querySelector("button");
-const video = document.querySelector("video");
-const img = document.querySelector("img");
+const video = document.createElement("video");
+const recordingCanvas = document.createElement("canvas");
+document.body.appendChild(video);
+//document.body.appendChild(recordingCanvas);
 
-/*
-let counter = 0;
-  setInterval(()=>{
-  video!.src = counter%2==0?"sample2.mp4":"sample.mp4";
-  video!.play();
-  counter++;
-}, 5000)
- */ 
-function printPipWindowDimensions(evt) {
-  const pipWindow = evt.target;
-  console.log(`The floating window dimensions are: ${pipWindow.width}x${pipWindow.height}px`);
-  // will print:
-  // The floating window dimensions are: 640x360px
+button.onclick = video.requestPictureInPicture;
+
+const cStream = recordingCanvas.captureStream(30);
+const recorder = new MediaRecorder(cStream);
+recorder.ondataavailable = encodeVideo;
+
+let timeout;
+setInterval(() => {
+  html2canvas(document.body).then(canvas => {
+    recorder.start();
+    const destCtx = recordingCanvas.getContext('2d');
+    recordingCanvas.width = canvas.width;
+    recordingCanvas.height = canvas.height;
+    destCtx.drawImage(canvas, 0, 0);
+    clearTimeout(timeout);
+    timeout = setTimeout(() => { recorder.stop(); }, 300)
+  })
+}, 3000);
+
+function encodeVideo(e: BlobEvent) {
+  console.log(e)
+  // combine all our chunks in one blob
+  const blob = new Blob([e.data]);
+  // do something with this blob
+  const vidURL = URL.createObjectURL(blob);
+  video.controls = true;
+  video.src = vidURL;
+  video.onended = function () {
+    URL.revokeObjectURL(vidURL);
+  }
 }
 
-button.onclick = function() {
-  video.requestPictureInPicture().then(pictureInPictureWindow => {
-    pictureInPictureWindow.onresize = printPipWindowDimensions;
-  });
-};
- 
-setInterval(()=>{
-  html2canvas(document.body).then(canvas => {
-    let pngUrl = canvas.toDataURL(); // png in dataURL format
-    img.src = pngUrl;
-  });
-  
-}, 1000)
+
+
