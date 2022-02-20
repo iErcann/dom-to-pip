@@ -3,6 +3,10 @@ let video, button, recordingCanvas;
 
 function createDom() {
     video = document.createElement("video");
+    video.controls = true;
+    video.autoplay = true;
+    video.style.position = "absolute";
+    video.style.width = "20px";
     document.body.appendChild(video);
     button = document.createElement("button");
     button.textContent = "Enter PIP";
@@ -45,9 +49,6 @@ function encodeVideo(e: BlobEvent) {
     const blob = new Blob([e.data]);
     // do something with this blob
     const vidURL = URL.createObjectURL(blob);
-    video.controls = true;
-    video.style.position = "absolute";
-    video.style.width = "20px";
     video.src = vidURL;
     video.onended = function () {
         URL.revokeObjectURL(vidURL);
