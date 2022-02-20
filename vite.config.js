@@ -6,7 +6,8 @@ module.exports = defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/lib/main.ts'),
       name: 'DomToPip',
-      fileName: (format) => `dom-to-pip.${format}.js`
+      fileName: (format) => `dom-to-pip.${format}.js`,
+      formats:['es', 'iife', 'umd']
     },
   }
 })

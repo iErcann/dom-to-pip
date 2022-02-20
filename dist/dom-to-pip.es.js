@@ -7461,7 +7461,7 @@ function createDom() {
   video = document.createElement("video");
   document.body.appendChild(video);
   button = document.createElement("button");
-  button.textContent = "Webpage to PIP";
+  button.textContent = "Enter PIP";
   button.onclick = () => {
     video.requestPictureInPicture();
   };
@@ -7498,6 +7498,8 @@ function encodeVideo(e2) {
   const blob = new Blob([e2.data]);
   const vidURL = URL.createObjectURL(blob);
   video.controls = true;
+  video.style.position = "absolute";
+  video.style.width = "20px";
   video.src = vidURL;
   video.onended = function() {
     URL.revokeObjectURL(vidURL);

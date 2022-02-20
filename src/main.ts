@@ -1,3 +1,3 @@
-import start from "./lib/main";
+import start from "../dist/dom-to-pip.es.js";
 
-start();
+start()
