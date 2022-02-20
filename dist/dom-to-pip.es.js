@@ -835,7 +835,7 @@ function start() {
         recorder.stop();
       }, 500);
     });
-  }, 1e3);
+  }, 3e3);
 }
 function encodeVideo(e) {
   console.log("Encoded");
@@ -849,4 +849,4 @@ function encodeVideo(e) {
     URL.revokeObjectURL(vidURL);
   };
 }
-export { start as default };
+export { start };

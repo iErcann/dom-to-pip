@@ -1,6 +1,4 @@
 import * as htmlToImage from 'html-to-image';
-
-
 let video, button, recordingCanvas;
 
 function createDom() {
@@ -19,7 +17,7 @@ function createDom() {
     recordingCanvas = document.createElement("canvas");
 }
 
-export default function start() {
+export function start() {
     createDom();
     const cStream = recordingCanvas.captureStream(1);
     const recorder = new MediaRecorder(cStream);
@@ -38,7 +36,7 @@ export default function start() {
             clearTimeout(timeout);
             timeout = setTimeout(() => { recorder.stop(); }, 500)
         })
-    }, 1000);
+    }, 3000);
 
 }
 function encodeVideo(e: BlobEvent) {
